@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/src/core/point.dart';
 import 'package:flutter_map/src/gestures/gestures.dart';
@@ -111,15 +112,29 @@ class FlutterMapState extends MapGestureMixin {
           onTap: handleTap,
           onLongPress: handleLongPress,
           onDoubleTap: handleDoubleTap,
-          child: GestureDetector(
+          child: RawGestureDetector(
             behavior: options.behavior,
-            onScaleStart: handleScaleStart,
-            onScaleUpdate: handleScaleUpdate,
-            onScaleEnd: handleScaleEnd,
-            onTap: _positionedTapController.onTap,
-            onLongPress: _positionedTapController.onLongPress,
-            onTapDown: _positionedTapController.onTapDown,
-            onTapUp: handleOnTapUp,
+            gestures: <Type, GestureRecognizerFactory>{
+              TapGestureRecognizer: GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
+                () => TapGestureRecognizer(),
+                (TapGestureRecognizer instance) {
+                  instance
+                    ..onTapDown = _positionedTapController.onTapDown
+                    ..onTapUp = handleOnTapUp
+                    ..onTap = _positionedTapController.onTap
+                    ..onTapCancel = () {};
+                },
+              ),
+              EagerGestureRecognizer: GestureRecognizerFactoryWithHandlers<ScaleGestureRecognizer>(
+                () => ScaleGestureRecognizer(),
+                (ScaleGestureRecognizer instance) {
+                  instance
+                    ..onStart = handleScaleStart
+                    ..onEnd = handleScaleEnd
+                    ..onUpdate = handleScaleUpdate;
+                }
+              )
+            },
             child: layerStack,
           ),
         );
