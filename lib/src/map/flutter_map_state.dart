@@ -125,7 +125,7 @@ class FlutterMapState extends MapGestureMixin {
                     ..onTapCancel = () {};
                 },
               ),
-              EagerGestureRecognizer: GestureRecognizerFactoryWithHandlers<ScaleGestureRecognizer>(
+              ScaleGestureRecognizer: GestureRecognizerFactoryWithHandlers<ScaleGestureRecognizer>(
                 () => ScaleGestureRecognizer(),
                 (ScaleGestureRecognizer instance) {
                   instance
