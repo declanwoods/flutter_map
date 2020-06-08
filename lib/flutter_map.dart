@@ -118,6 +118,7 @@ class MapOptions {
   final LongPressCallback onLongPress;
   final PositionCallback onPositionChanged;
   final List<MapPlugin> plugins;
+  final HitTestBehavior behavior;
   LatLng center;
   LatLng swPanBoundary;
   LatLng nePanBoundary;
@@ -135,6 +136,7 @@ class MapOptions {
     this.onLongPress,
     this.onPositionChanged,
     this.plugins = const [],
+    this.behavior,
     this.swPanBoundary,
     this.nePanBoundary,
   }) {
